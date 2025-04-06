@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../components/SearchBar";
+import SearchResults from "../components/SearchResults";
+import Wishlist from "../components/Wishlist";
 import { getUserData } from "../api/auth";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (!token) {
       navigate("/login");
       return;
@@ -23,22 +28,23 @@ const Dashboard = () => {
   }, [navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-3xl font-bold">Личный кабинет</h1>
-      {user ? (
-        <p className="mt-4 text-lg">Привет, {user.username}!</p>
-      ) : (
-        <p className="mt-4">Загрузка...</p>
-      )}
-      <button
-        className="mt-6 bg-red-500 text-white px-4 py-2 rounded"
-        onClick={() => {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }}
-      >
-        Выйти
-      </button>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Личный кабинет {user && `— ${user.username}`}</h1>
+
+      {/* 🔍 Поисковая строка */}
+      <SearchBar setSearchTerm={setSearchTerm} />
+
+      {/* 📄 Результаты поиска */}
+      <SearchResults
+        searchTerm={searchTerm}
+        setSearchResults={setSearchResults}
+        searchResults={searchResults}
+        wishlist={wishlist}
+        setWishlist={setWishlist}
+      />
+
+      {/* 💖 Вишлист */}
+      <Wishlist wishlist={wishlist} setWishlist={setWishlist} />
     </div>
   );
 };
