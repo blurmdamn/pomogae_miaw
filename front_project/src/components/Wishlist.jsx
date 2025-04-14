@@ -1,9 +1,20 @@
 import GameCard from "./GameCard";
 
 const Wishlist = ({ wishlist, setWishlist }) => {
-  const handleRemove = (game) => {
-    // Здесь будет DELETE-запрос в будущем
-    setWishlist(wishlist.filter((g) => g.id !== game.id));
+  const handleRemove = async (game) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const response = await fetch(`http://127.0.0.1:8000/api/wishlist/${game.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      setWishlist(wishlist.filter((g) => g.id !== game.id));
+    }
   };
 
   return (

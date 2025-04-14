@@ -25,6 +25,29 @@ const Dashboard = () => {
         localStorage.removeItem("token");
         navigate("/login");
       });
+
+    const fetchWishlist = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/wishlists/list/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Собрать все продукты из всех вишлистов пользователя
+          const allProducts = data.flatMap((wishlist) => wishlist.products || []);
+          setWishlist(allProducts);
+        } else {
+          console.error("Ошибка загрузки вишлиста:", response.status);
+        }
+      } catch (error) {
+        console.error("Ошибка запроса вишлиста:", error);
+      }
+    };
+
+    fetchWishlist();
   }, [navigate]);
 
   return (

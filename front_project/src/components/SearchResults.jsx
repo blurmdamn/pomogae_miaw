@@ -14,11 +14,25 @@ const SearchResults = ({ searchTerm, setSearchResults, searchResults, wishlist, 
     fetchResults();
   }, [searchTerm, setSearchResults]);
 
-  const handleAddToWishlist = (game) => {
-    setWishlist((prev) => [...prev, game]);
+  const handleAddToWishlist = async (game) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const response = await fetch("http://127.0.0.1:8000/api/wishlists/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ product_id: game.id }),
+    });
+
+    if (response.ok) {
+      setWishlist((prev) => [...prev, game]);
+    }
   };
 
-  if (searchTerm.length < 2) return null; // 👉 Ничего не показываем, пока пользователь не ввёл текст
+  if (searchTerm.length < 2) return null;
 
   return (
     <div className="mb-8">
@@ -28,7 +42,7 @@ const SearchResults = ({ searchTerm, setSearchResults, searchResults, wishlist, 
           <GameCard
             key={game.id}
             game={game}
-            inWishlist={false}
+            inWishlist={wishlist.some((g) => g.id === game.id)}
             onAdd={handleAddToWishlist}
           />
         ))
