@@ -18,11 +18,7 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
@@ -33,45 +29,49 @@ const Register = () => {
         setError(data.detail || "Ошибка при регистрации");
       }
     } catch (err) {
-      console.error("Ошибка:", err);
       setError("Ошибка сети. Попробуйте ещё раз.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold text-center">Регистрация</h2>
-        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        <form className="mt-4" onSubmit={handleRegister}>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="bg-white/10 backdrop-blur-lg text-white p-8 rounded-lg w-full max-w-md shadow-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">Регистрация</h2>
+        {error && <p className="text-red-300 text-center">{error}</p>}
+        <form onSubmit={handleRegister} className="space-y-4">
           <input
             type="text"
             placeholder="Имя пользователя"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
+            className="w-full px-4 py-2 rounded bg-white/90 text-black placeholder-gray-600"
           />
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
+            className="w-full px-4 py-2 rounded bg-white/90 text-black placeholder-gray-600"
           />
           <input
             type="password"
             placeholder="Пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
+            className="w-full px-4 py-2 rounded bg-white/90 text-black placeholder-gray-600"
           />
-          <button type="submit" className="w-full bg-green-500 text-white p-2 rounded">
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-[#000428] to-[#2a2d34] hover:opacity-90 text-white py-2 rounded font-semibold"
+          >
             Зарегистрироваться
           </button>
+
+
         </form>
-        <p className="text-center text-sm mt-4">
+        <p className="mt-4 text-center text-sm text-white">
           Уже есть аккаунт?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-300 underline">
             Войти
           </Link>
         </p>

@@ -1,22 +1,45 @@
 import { useEffect } from "react";
 import GameCard from "./GameCard";
 
-const SearchResults = ({ searchTerm, setSearchResults, searchResults, wishlist, setWishlist }) => {
+const SearchResults = ({
+  searchTerm,
+  searchResults,
+  setSearchResults,
+  wishlist,
+  setWishlist,
+  searchMode,
+}) => {
   useEffect(() => {
-    if (searchTerm.length < 2) return;
-
     const fetchResults = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/products/search?q=${searchTerm}`);
-      const data = await response.json();
-      setSearchResults(data);
+      let url = "";
+
+      if (searchTerm === "все") {
+        url = "http://127.0.0.1:8000/api/products/list";
+      } else if (searchTerm.length >= 2) {
+        const endpoint = searchMode === "smart" ? "smart_search" : "search";
+        url = `http://127.0.0.1:8000/api/products/${endpoint}?q=${searchTerm}`;
+      } else {
+        return;
+      }
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setSearchResults(data);
+      } catch (error) {
+        console.error("Ошибка при загрузке результатов поиска:", error);
+      }
     };
 
     fetchResults();
-  }, [searchTerm, setSearchResults]);
+  }, [searchTerm, searchMode, setSearchResults]);
 
   const handleAddToWishlist = async (game) => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      alert("У вас нет аккаунта. Зарегистрируйтесь, чтобы добавить в вишлист.");
+      return;
+    }
 
     const response = await fetch("http://127.0.0.1:8000/api/wishlists/add", {
       method: "POST",
@@ -32,20 +55,22 @@ const SearchResults = ({ searchTerm, setSearchResults, searchResults, wishlist, 
     }
   };
 
-  if (searchTerm.length < 2) return null;
+  if (searchTerm.length < 2 && searchTerm !== "все") return null;
 
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-2">Результаты поиска</h2>
       {searchResults.length > 0 ? (
-        searchResults.map((game) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            inWishlist={wishlist.some((g) => g.id === game.id)}
-            onAdd={handleAddToWishlist}
-          />
-        ))
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {searchResults.map((game) => (
+            <GameCard
+              key={game.id}
+              game={game}
+              inWishlist={wishlist.some((g) => g.id === game.id)}
+              onAdd={handleAddToWishlist}
+            />
+          ))}
+        </div>
       ) : (
         <p className="text-gray-500">Ничего не найдено.</p>
       )}

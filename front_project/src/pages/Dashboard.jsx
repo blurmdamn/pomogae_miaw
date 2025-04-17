@@ -5,6 +5,13 @@ import SearchResults from "../components/SearchResults";
 import Wishlist from "../components/Wishlist";
 import { getUserData } from "../api/auth";
 
+// 👇 Иконки из Heroicons
+import {
+  MagnifyingGlassIcon,
+  HeartIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -36,7 +43,6 @@ const Dashboard = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // Собрать все продукты из всех вишлистов пользователя
           const allProducts = data.flatMap((wishlist) => wishlist.products || []);
           setWishlist(allProducts);
         } else {
@@ -52,22 +58,35 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Личный кабинет {user && `— ${user.username}`}</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <UserCircleIcon className="h-8 w-8 text-blue-600" />
+        <h1 className="text-3xl font-bold">
+          Личный кабинет {user && `— ${user.username}`}
+        </h1>
+      </div>
 
-      {/* 🔍 Поисковая строка */}
-      <SearchBar setSearchTerm={setSearchTerm} />
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <MagnifyingGlassIcon className="h-6 w-6 text-gray-600" />
+          <h2 className="text-xl font-semibold">Поиск игр</h2>
+        </div>
+        <SearchBar setSearchTerm={setSearchTerm} />
+        <SearchResults
+          searchTerm={searchTerm}
+          setSearchResults={setSearchResults}
+          searchResults={searchResults}
+          wishlist={wishlist}
+          setWishlist={setWishlist}
+        />
+      </div>
 
-      {/* 📄 Результаты поиска */}
-      <SearchResults
-        searchTerm={searchTerm}
-        setSearchResults={setSearchResults}
-        searchResults={searchResults}
-        wishlist={wishlist}
-        setWishlist={setWishlist}
-      />
-
-      {/* 💖 Вишлист */}
-      <Wishlist wishlist={wishlist} setWishlist={setWishlist} />
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <HeartIcon className="h-6 w-6 text-pink-500" />
+          <h2 className="text-xl font-semibold">Мой вишлист</h2>
+        </div>
+        <Wishlist wishlist={wishlist} setWishlist={setWishlist} />
+      </div>
     </div>
   );
 };

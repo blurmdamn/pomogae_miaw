@@ -18,17 +18,18 @@ const Wishlist = ({ wishlist, setWishlist }) => {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">Мой вишлист</h2>
+    <div className="mb-8">
       {wishlist.length > 0 ? (
-        wishlist.map((game) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            inWishlist={true}
-            onRemove={handleRemove}
-          />
-        ))
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {wishlist.map((game) => (
+            <GameCard
+              key={game.id}
+              game={game}
+              inWishlist={true}
+              onRemove={handleRemove}
+            />
+          ))}
+        </div>
       ) : (
         <p className="text-gray-500">Вишлист пуст.</p>
       )}
