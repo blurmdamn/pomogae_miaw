@@ -42,7 +42,7 @@ const Login = () => {
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="text"
-            placeholder="Логин или Email"
+            placeholder="Логин"
             value={usernameOrEmail}
             onChange={(e) => setUsernameOrEmail(e.target.value)}
             className="w-full px-4 py-2 rounded bg-white/90 text-black placeholder-gray-600"
