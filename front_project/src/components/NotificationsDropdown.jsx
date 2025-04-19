@@ -73,7 +73,7 @@ const NotificationsDropdown = () => {
 
             ˝
             {open && (
-                <div className="absolute right-0 mt-2 w-96 bg-black/70 backdrop-blur-md text-white rounded-lg shadow-[0_0_12px_rgba(255,255,255,0.1)] border border-white/10 p-4 z-50 max-h-96 overflow-y-auto">
+                <div className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 mt-2 w-[90vw] sm:w-96 bg-black/70 backdrop-blur-md text-white rounded-lg shadow-[0_0_12px_rgba(255,255,255,0.1)] border border-white/10 p-4 z-50 max-h-96 overflow-y-auto">
                     <div className="flex justify-between items-center mb-2">
                         <span className="font-semibold text-lg">Уведомления</span>
                         {notifications.length > 0 && (

@@ -15,10 +15,7 @@ const Login = () => {
       const response = await fetch("http://127.0.0.1:8000/api/users/token", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          username: usernameOrEmail,
-          password: password,
-        }),
+        body: new URLSearchParams({ username: usernameOrEmail, password }),
       });
 
       const data = await response.json();
@@ -35,9 +32,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white/10 backdrop-blur-lg text-white p-8 rounded-lg w-full max-w-md shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6">Вход</h2>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="bg-white/10 backdrop-blur-lg text-white p-6 sm:p-8 rounded-lg w-full max-w-md shadow-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">Вход</h2>
         {error && <p className="text-red-300 text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <input
@@ -60,7 +57,6 @@ const Login = () => {
           >
             Войти
           </button>
-
         </form>
         <p className="mt-4 text-center text-sm text-white">
           Нет аккаунта?{" "}

@@ -19,7 +19,6 @@ const Navbar = () => {
     };
 
     checkToken();
-
     window.addEventListener("focus", checkToken);
     window.addEventListener("storage", checkToken);
 
@@ -37,7 +36,8 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gradient-to-r from-[#4b000f] to-[#0a0a0a] text-white p-4 shadow-lg">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+        {/* Лого */}
         <Link
           to="/"
           className="flex items-center gap-2 text-2xl font-bold tracking-wide bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(30,30,30,0.8)] hover:opacity-90 transition"
@@ -46,7 +46,8 @@ const Navbar = () => {
           GameDeals
         </Link>
 
-        <div className="flex items-center space-x-6 text-sm font-medium">
+        {/* Меню */}
+        <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-sm font-medium">
           {isLoggedIn ? (
             <>
               <NotificationsDropdown />

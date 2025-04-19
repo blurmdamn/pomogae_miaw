@@ -18,26 +18,26 @@ const SearchBar = ({ setSearchTerm, searchMode, setSearchMode }) => {
   };
 
   return (
-    <div className="mb-6 flex flex-col sm:flex-row gap-2 items-center">
+    <div className="mb-6 flex flex-col sm:flex-row gap-2 sm:items-center w-full">
       <input
         type="text"
         value={value}
         placeholder="Найти игру..."
-        className="flex-1 p-2 border rounded"
+        className="w-full sm:flex-1 p-2 border rounded text-sm"
         onChange={handleChange}
       />
-      <div className="flex gap-2 items-center">
+      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
         <select
           value={searchMode}
           onChange={toggleMode}
-          className="border px-2 py-1 rounded text-sm"
+          className="w-full sm:w-auto border px-2 py-1 rounded text-sm"
         >
           <option value="default">По названию</option>
           <option value="smart">Умный поиск</option>
         </select>
         <button
           onClick={handleClear}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1 rounded text-sm"
+          className="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1 rounded text-sm"
         >
           Очистить
         </button>

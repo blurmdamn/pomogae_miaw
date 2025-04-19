@@ -4,8 +4,6 @@ import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 import Wishlist from "../components/Wishlist";
 import { getUserData } from "../api/auth";
-
-// 👇 Иконки из Heroicons
 import {
   MagnifyingGlassIcon,
   HeartIcon,
@@ -36,9 +34,7 @@ const Dashboard = () => {
     const fetchWishlist = async () => {
       try {
         const response = await fetch("http://127.0.0.1:8000/api/wishlists/list/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.ok) {
@@ -57,14 +53,16 @@ const Dashboard = () => {
   }, [navigate]);
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="flex items-center gap-3 mb-6">
         <UserCircleIcon className="h-8 w-8 text-blue-600" />
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl sm:text-3xl font-bold">
           Личный кабинет {user && `— ${user.username}`}
         </h1>
       </div>
 
+
+      {/* Поиск */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <MagnifyingGlassIcon className="h-6 w-6 text-gray-600" />
@@ -80,6 +78,7 @@ const Dashboard = () => {
         />
       </div>
 
+      {/* Вишлист */}
       <div>
         <div className="flex items-center gap-2 mb-2">
           <HeartIcon className="h-6 w-6 text-pink-500" />

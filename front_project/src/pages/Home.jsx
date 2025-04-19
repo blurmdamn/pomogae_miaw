@@ -25,19 +25,19 @@ const Home = () => {
   }, [storeFilter]);
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <FireIcon className="h-7 w-7 text-orange-500" />
+    <div className="p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <FireIcon className="h-6 w-6 sm:h-7 sm:w-7 text-orange-500" />
           Популярные предложения
         </h1>
 
-        <div className="flex items-center gap-2 bg-white/90 text-black px-4 py-2 rounded shadow">
+        <div className="flex items-center gap-2 bg-white/90 text-black px-4 py-2 rounded shadow w-full sm:w-auto">
           <BuildingStorefrontIcon className="w-5 h-5 text-gray-700" />
           <select
             value={storeFilter}
             onChange={(e) => setStoreFilter(e.target.value)}
-            className="bg-transparent outline-none text-sm"
+            className="w-full sm:w-auto bg-transparent outline-none text-sm"
           >
             {storeOptions.map((store) => (
               <option key={store.value} value={store.value}>
@@ -52,7 +52,6 @@ const Home = () => {
         {games.map((game) => (
           <GameCard key={game.id} game={game} isGuestView={true} />
         ))}
-
       </div>
     </div>
   );

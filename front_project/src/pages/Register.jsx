@@ -34,9 +34,9 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white/10 backdrop-blur-lg text-white p-8 rounded-lg w-full max-w-md shadow-lg">
-        <h2 className="text-3xl font-bold text-center mb-6">Регистрация</h2>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="bg-white/10 backdrop-blur-lg text-white p-6 sm:p-8 rounded-lg w-full max-w-md shadow-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6">Регистрация</h2>
         {error && <p className="text-red-300 text-center">{error}</p>}
         <form onSubmit={handleRegister} className="space-y-4">
           <input
@@ -66,8 +66,6 @@ const Register = () => {
           >
             Зарегистрироваться
           </button>
-
-
         </form>
         <p className="mt-4 text-center text-sm text-white">
           Уже есть аккаунт?{" "}
