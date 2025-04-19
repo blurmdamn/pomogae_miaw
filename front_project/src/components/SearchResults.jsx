@@ -1,14 +1,17 @@
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "../redux/wishlistSlice";
 import GameCard from "./GameCard";
 
 const SearchResults = ({
   searchTerm,
   searchResults,
   setSearchResults,
-  wishlist,
-  setWishlist,
   searchMode,
 }) => {
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist.items || []);
+
   useEffect(() => {
     const fetchResults = async () => {
       let url = "";
@@ -51,7 +54,7 @@ const SearchResults = ({
     });
 
     if (response.ok) {
-      setWishlist((prev) => [...prev, game]);
+      dispatch(addToWishlist(game)); // 🧠 теперь Redux
     }
   };
 

@@ -1,6 +1,11 @@
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromWishlist } from "../redux/wishlistSlice";
 import GameCard from "./GameCard";
 
-const Wishlist = ({ wishlist, setWishlist }) => {
+const Wishlist = () => {
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist.items);
+
   const handleRemove = async (game) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -13,7 +18,7 @@ const Wishlist = ({ wishlist, setWishlist }) => {
     });
 
     if (response.ok) {
-      setWishlist(wishlist.filter((g) => g.id !== game.id));
+      dispatch(removeFromWishlist(game.id));
     }
   };
 

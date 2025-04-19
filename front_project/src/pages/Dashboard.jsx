@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setWishlist } from "../redux/wishlistSlice";
+
 import SearchBar from "../components/SearchBar";
 import SearchResults from "../components/SearchResults";
 import Wishlist from "../components/Wishlist";
 import { getUserData } from "../api/auth";
+
 import {
   MagnifyingGlassIcon,
   HeartIcon,
@@ -12,10 +16,11 @@ import {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,7 +45,7 @@ const Dashboard = () => {
         if (response.ok) {
           const data = await response.json();
           const allProducts = data.flatMap((wishlist) => wishlist.products || []);
-          setWishlist(allProducts);
+          dispatch(setWishlist(allProducts)); // 💥 сохраняем в Redux
         } else {
           console.error("Ошибка загрузки вишлиста:", response.status);
         }
@@ -50,7 +55,7 @@ const Dashboard = () => {
     };
 
     fetchWishlist();
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <div className="p-4 sm:p-6">
@@ -60,7 +65,6 @@ const Dashboard = () => {
           Личный кабинет {user && `— ${user.username}`}
         </h1>
       </div>
-
 
       {/* Поиск */}
       <div className="mb-6">
@@ -73,8 +77,6 @@ const Dashboard = () => {
           searchTerm={searchTerm}
           setSearchResults={setSearchResults}
           searchResults={searchResults}
-          wishlist={wishlist}
-          setWishlist={setWishlist}
         />
       </div>
 
@@ -84,7 +86,7 @@ const Dashboard = () => {
           <HeartIcon className="h-6 w-6 text-pink-500" />
           <h2 className="text-xl font-semibold">Мой вишлист</h2>
         </div>
-        <Wishlist wishlist={wishlist} setWishlist={setWishlist} />
+        <Wishlist />
       </div>
     </div>
   );

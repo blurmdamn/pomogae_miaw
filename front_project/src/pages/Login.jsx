@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,9 +26,24 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
-        navigate("/dashboard");
+
+        // 🔽 Получаем профиль пользователя
+        const userResponse = await fetch("http://127.0.0.1:8000/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${data.access_token}`,
+          },
+        });
+
+        const userInfo = await userResponse.json();
+
+        if (userResponse.ok) {
+          dispatch(login(userInfo)); // 🔥 сохраняем в Redux
+          navigate("/dashboard");
+        } else {
+          setError("Не удалось загрузить профиль.");
+        }
       } else {
-        setError(data.detail || "Неизвестная ошибка");
+        setError(data.detail || "Неверные данные.");
       }
     } catch (err) {
       setError("Ошибка сети. Попробуйте ещё раз.");
