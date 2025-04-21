@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowRightOnRectangleIcon,
   ArrowLeftOnRectangleIcon,
   UserPlusIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import { CubeTransparentIcon } from "@heroicons/react/24/solid";
 import NotificationsDropdown from "./NotificationsDropdown";
@@ -12,13 +13,14 @@ import { logout } from "../redux/userSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  // 🧠 Используем глобальное состояние Redux
   const isLoggedIn = useSelector((state) => state.user.isAuthenticated);
+  const isOnDashboard = location.pathname === "/dashboard";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    dispatch(logout()); // 🔥 обнуляем Redux-состояние
+    dispatch(logout());
     navigate("/");
   };
 
@@ -36,7 +38,21 @@ const Navbar = () => {
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-sm font-medium">
           {isLoggedIn ? (
             <>
+              {/* Личный кабинет */}
+              <Link
+                to="/dashboard"
+                title="Личный кабинет"
+                className={`w-6 h-6 flex items-center justify-center transition ${
+                  isOnDashboard ? "text-blue-400" : "text-white hover:text-blue-300"
+                }`}
+              >
+                <UserIcon className="w-6 h-6" />
+              </Link>
+
+              {/* Уведомления */}
               <NotificationsDropdown />
+
+              {/* Выйти */}
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-3 py-1 border border-red-400 rounded hover:bg-red-500 hover:text-white transition"
