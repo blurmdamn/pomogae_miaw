@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../redux/wishlistSlice";
 import GameCard from "./GameCard";
+import NotificationModal from "./NotificationModal"; // ✅ модалка
 
 const SearchResults = ({
   searchTerm,
@@ -11,6 +12,9 @@ const SearchResults = ({
 }) => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.items || []);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -54,7 +58,9 @@ const SearchResults = ({
     });
 
     if (response.ok) {
-      dispatch(addToWishlist(game)); // 🧠 теперь Redux
+      dispatch(addToWishlist(game));
+      setModalMessage("Добавлено в вишлист");
+      setModalOpen(true);
     }
   };
 
@@ -62,6 +68,12 @@ const SearchResults = ({
 
   return (
     <div className="mb-8">
+      <NotificationModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        message={modalMessage}
+      />
+
       <h2 className="text-xl font-bold mb-2">Результаты поиска</h2>
       {searchResults.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

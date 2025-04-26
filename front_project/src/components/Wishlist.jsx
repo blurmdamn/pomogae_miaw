@@ -1,10 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromWishlist } from "../redux/wishlistSlice";
 import GameCard from "./GameCard";
+import { useState } from "react";
+import NotificationModal from "./NotificationModal"; // ✅ подключаем модалку
 
 const Wishlist = () => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.items);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleRemove = async (game) => {
     const token = localStorage.getItem("token");
@@ -19,11 +24,20 @@ const Wishlist = () => {
 
     if (response.ok) {
       dispatch(removeFromWishlist(game.id));
+      setModalMessage("Удалено из вишлиста");
+      setModalOpen(true);
     }
   };
 
   return (
     <div className="mb-8">
+      {/* ✅ Модалка */}
+      <NotificationModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        message={modalMessage}
+      />
+
       {wishlist.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {wishlist.map((game) => (
